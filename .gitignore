@@ -148,6 +148,7 @@ dmypy.json
 # Windows
 Thumbs.db
 Desktop.ini
+*:Zone.Identifier
 
 # Linux
 *~
@@ -158,3 +159,5 @@ Desktop.ini
 
 # Videos / generated outputs
 *.mp4
+outputs/
+data/
