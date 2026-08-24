@@ -31,3 +31,23 @@ def test_resolve_goalkeepers_team_id_uses_nearest_team_centroid() -> None:
         resolve_goalkeepers_team_id(players, players_team_id, goalkeepers),
         np.array([0, 1]),
     )
+
+
+def test_resolve_goalkeepers_team_id_falls_back_to_available_team() -> None:
+    players = sv.Detections(
+        xyxy=np.array(
+            [
+                [0, 0, 10, 10],
+                [10, 0, 20, 10],
+            ],
+            dtype=float,
+        )
+    )
+    goalkeepers = sv.Detections(
+        xyxy=np.array([[2, 0, 12, 10]], dtype=float)
+    )
+
+    np.testing.assert_array_equal(
+        resolve_goalkeepers_team_id(players, np.array([0, 0]), goalkeepers),
+        np.array([0]),
+    )

@@ -39,20 +39,20 @@ def resolve_goalkeepers_team_id(
     Returns:
         Array com o ID de time de cada goleiro. Retorna vazio se nao houver goleiros.
 
-    Raises:
-        ValueError: Se nao houver jogadores classificados nos dois times.
+        Se houver jogadores de apenas um time no frame, os goleiros sao associados a
+        esse time como fallback.
     """
 
     if len(goalkeepers) == 0:
         return np.array([], dtype=int)
 
     players_xy = players.get_anchors_coordinates(sv.Position.BOTTOM_CENTER)
-    if (
-        len(players_xy) == 0
-        or not np.any(players_team_id == 0)
-        or not np.any(players_team_id == 1)
-    ):
-        raise ValueError("Nao ha jogadores suficientes dos dois times para resolver goleiros.")
+    if len(players_xy) == 0:
+        return np.zeros(len(goalkeepers), dtype=int)
+    if not np.any(players_team_id == 0):
+        return np.ones(len(goalkeepers), dtype=int)
+    if not np.any(players_team_id == 1):
+        return np.zeros(len(goalkeepers), dtype=int)
 
     goalkeepers_xy = goalkeepers.get_anchors_coordinates(sv.Position.BOTTOM_CENTER)
     team_0_centroid = players_xy[players_team_id == 0].mean(axis=0)
