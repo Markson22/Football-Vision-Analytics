@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sports"
+version = "0.1.0"
+description = "A package for sports analytics"
+requires-python = ">=3.8"
+dynamic = ["readme", "dependencies"]
+
+[tool.setuptools]
+packages = ["sports"]

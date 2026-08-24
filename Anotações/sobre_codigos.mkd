@@ -1,0 +1,41 @@
+# Explicação Resumida do Código
+Este é um sistema de análise de vídeo de futebol com IA que detecta e rastreia jogadores, bola e elementos do campo usando modelos YOLO.
+Componentes Principais
+Modelos de Detecção:
+
+Detecção de jogadores, goleiros e árbitros
+Detecção da bola
+Detecção de pontos-chave do campo
+
+# Funcionalidades (Modos):
+
+PITCH_DETECTION - Identifica pontos-chave do campo (linhas, áreas)
+PLAYER_DETECTION - Detecta pessoas em campo
+BALL_DETECTION - Rastreia a bola com buffer de histórico
+PLAYER_TRACKING - Rastreia jogadores com IDs únicos entre frames
+TEAM_CLASSIFICATION - Classifica jogadores por time usando suas cores de uniforme
+RADAR - Cria visão tática 2D do campo com posições transformadas
+
+# Fluxo de Trabalho
+
+Carrega vídeo frame por frame
+Aplica modelos YOLO para detecção
+Rastreia objetos entre frames (ByteTrack)
+Classifica times por cor de uniforme (clustering)
+Anota frames com caixas, elipses e labels
+Gera vídeo processado
+
+# Recursos Técnicos:
+
+Transformação de perspectiva (campo → vista tática)
+Resolução automática de times dos goleiros por proximidade
+Detecção de bola com slicing para melhor precisão
+Anotações visuais com cores distintas por time
+
+
+
+Para reproduzir 
+
+vision computer\sports-main>
+
+ python main.py --source_video_path "data/0bfacc_0.mp4" --target_video_path "output.mp4"
