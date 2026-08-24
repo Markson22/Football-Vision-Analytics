@@ -4,6 +4,8 @@ from typing import List, Tuple
 
 @dataclass
 class SoccerPitchConfiguration:
+    """Dimensoes e topologia de referencia de um campo de futebol em centimetros."""
+
     width: int = 7000  # [cm]
     length: int = 12000  # [cm]
     penalty_box_width: int = 4100  # [cm]

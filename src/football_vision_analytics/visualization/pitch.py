@@ -1,10 +1,12 @@
-from typing import Optional, List
+"""Renderizacao 2D do campo e de elementos taticos."""
+
+from typing import List, Optional
 
 import cv2
 import supervision as sv
 import numpy as np
 
-from sports.configs.soccer import SoccerPitchConfiguration
+from football_vision_analytics.pitch.configuration import SoccerPitchConfiguration
 
 
 def draw_pitch(

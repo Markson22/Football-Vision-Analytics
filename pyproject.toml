@@ -3,11 +3,39 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "sports"
+name = "football-vision-analytics"
 version = "0.1.0"
-description = "A package for sports analytics"
-requires-python = ">=3.8"
-dynamic = ["readme", "dependencies"]
+description = "Projeto de Visao Computacional aplicado a analise de partidas de futebol."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Markson Cesar" },
+]
+keywords = ["computer-vision", "football", "soccer", "sports-analytics", "yolo"]
+dependencies = [
+    "gdown",
+    "numpy",
+    "opencv-python",
+    "protobuf",
+    "scikit-learn",
+    "sentencepiece",
+    "supervision",
+    "torch",
+    "tqdm",
+    "transformers",
+    "ultralytics",
+    "umap-learn",
+]
 
-[tool.setuptools]
-packages = ["sports"]
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[project.urls]
+Homepage = "https://github.com/Markson22/Football-Vision-Analytics"
+Repository = "https://github.com/Markson22/Football-Vision-Analytics"
+
+[tool.setuptools.packages.find]
+where = ["src"]

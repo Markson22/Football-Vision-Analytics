@@ -6,19 +6,17 @@ import supervision as sv
 
 
 class BallAnnotator:
-    """
-    A class to annotate frames with circles of varying radii and colors.
+    """Anota a bola com um rastro visual baseado nas deteccoes recentes.
 
-    Attributes:
-        radius (int): The maximum radius of the circles to be drawn.
-        buffer (deque): A deque buffer to store recent coordinates for annotation.
-        color_palette (sv.ColorPalette): A color palette for the circles.
-        thickness (int): The thickness of the circle borders.
+    Args:
+        radius: Raio maximo dos circulos desenhados.
+        buffer_size: Quantidade de frames mantidos no rastro.
+        thickness: Espessura dos circulos.
     """
 
     def __init__(self, radius: int, buffer_size: int = 5, thickness: int = 2):
 
-        self.color_palette = sv.ColorPalette.from_matplotlib('jet', buffer_size)
+        self.color_palette = sv.ColorPalette.from_matplotlib("jet", buffer_size)
         self.buffer = deque(maxlen=buffer_size)
         self.radius = radius
         self.thickness = thickness
@@ -66,16 +64,8 @@ class BallAnnotator:
 
 
 class BallTracker:
-    """
-    A class used to track a soccer ball's position across video frames.
+    """Seleciona a deteccao da bola mais consistente com o historico recente."""
 
-    The BallTracker class maintains a buffer of recent ball positions and uses this
-    buffer to predict the ball's position in the current frame by selecting the
-    detection closest to the average position (centroid) of the recent positions.
-
-    Attributes:
-        buffer (collections.deque): A deque buffer to store recent ball positions.
-    """
     def __init__(self, buffer_size: int = 10):
         self.buffer = deque(maxlen=buffer_size)
 

@@ -1,3 +1,5 @@
+"""Transformacoes de perspectiva entre imagem e plano do campo."""
+
 from typing import Tuple
 import cv2
 import numpy as np
@@ -5,6 +7,8 @@ import numpy.typing as npt
 
 
 class ViewTransformer:
+    """Aplica homografia para transformar pontos ou imagens entre planos."""
+
     def __init__(
             self,
             source: npt.NDArray[np.float32],
