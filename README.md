@@ -1,51 +1,204 @@
-<div align="center">
+# ⚽ Football Vision Analytics
 
-  <h1>sports</h1>
+Projeto de Visão Computacional aplicado à análise de partidas de futebol.
 
-[notebooks](https://github.com/roboflow/notebooks) | [inference](https://github.com/roboflow/inference) | [autodistill](https://github.com/autodistill/autodistill) | [maestro](https://github.com/roboflow/multimodal-maestro)
+## Sobre o projeto
 
-</div>
+O **Football Vision Analytics** organiza um pipeline Python para processar vídeos de futebol com modelos de visão computacional. O projeto detecta elementos da partida, rastreia jogadores e bola, classifica jogadores por time, projeta posições em uma visão tática do campo e estima velocidades dos jogadores.
 
-## 👋 hello
+O código foi reorganizado para separar responsabilidades em módulos reutilizáveis, mantendo o exemplo executável em `examples/soccer/main.py`.
 
-In sports, every centimeter and every second matter. That's why Roboflow decided to use sports as a testing ground to push our object detection, image segmentation, keypoint detection, and foundational models to their limits. This repository contains reusable tools that can be applied in sports and beyond.
+## Funcionalidades
 
-## 🥵 challenges
+- Detecção de pontos-chave do campo de futebol.
+- Detecção de jogadores, goleiros, árbitros e bola.
+- Rastreamento de jogadores com ByteTrack.
+- Rastreamento e anotação da bola com histórico visual.
+- Classificação visual de jogadores em dois times usando crops de uniforme.
+- Associação de goleiros ao time mais próximo.
+- Visualização radar com transformação de perspectiva para o campo 2D.
+- Estimativa de velocidade dos jogadores em km/h.
+- Geração de vídeo processado com anotações.
 
-Are you also a fan of computer vision and sports?  We welcome contributions from anyone who shares our passion! Together, we can build powerful open-source tools for sports analytics. Here are the main challenges we're looking to tackle:
+## Tecnologias utilizadas
 
-- **Ball tracking:** Tracking the ball is extremely difficult due to its small size and rapid movements, especially in high-resolution videos.
-- **Reading jersey numbers:** Accurately reading player jersey numbers is often hampered by blurry videos, players turning away, or other objects obscuring the numbers.
-- **Player tracking:** Maintaining consistent player identification throughout a game is a challenge due to frequent occlusions caused by other players or objects on the field.
-- **Player re-identification:** Re-identifying players who have left and re-entered the frame is tricky, especially with moving cameras or when players are visually similar.
-- **Camera calibration:** Accurately calibrating camera views is crucial for extracting advanced statistics like player speed and distance traveled. This is a complex task due to the dynamic nature of sports and varying camera angles.
+- Python
+- OpenCV
+- NumPy
+- PyTorch
+- Ultralytics YOLO
+- Supervision
+- Transformers
+- SigLIP
+- UMAP
+- scikit-learn
+- tqdm
+- gdown
 
-## 💻 install
+## Arquitetura
 
-We don't have a Python package yet. Install from source in a
-[**Python>=3.8**](https://www.python.org/) environment.
+Fluxo geral do exemplo de futebol:
 
-```bash
-pip install git+https://github.com/roboflow/sports.git
+```text
+Vídeo
+  ↓
+Leitura frame a frame
+  ↓
+Detecção com YOLO
+  ↓
+Tracking e pós-processamento
+  ↓
+Classificação / transformação de perspectiva / análise
+  ↓
+Anotação visual
+  ↓
+Vídeo processado
 ```
 
-## ⚽ datasets
+O entrypoint `examples/soccer/main.py` apenas lê argumentos, monta a configuração e executa `FootballAnalysisPipeline`. A lógica fica em `src/football_vision_analytics/`.
 
-| use case                               | dataset                                                                                                                                                           |
-|:---------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ⚽ soccer player detection              | [![Download Dataset](https://app.roboflow.com/images/download-dataset-badge.svg)](https://universe.roboflow.com/roboflow-jvuqo/football-players-detection-3zvbc)  |
-| ⚽ soccer ball detection                | [![Download Dataset](https://app.roboflow.com/images/download-dataset-badge.svg)](https://universe.roboflow.com/roboflow-jvuqo/football-ball-detection-rejhg)     |
-| ⚽ soccer pitch keypoint detection      | [![Download Dataset](https://app.roboflow.com/images/download-dataset-badge.svg)](https://universe.roboflow.com/roboflow-jvuqo/football-field-detection-f07vi)    |
-| 🏀 basketball court keypoint detection | [![Download Dataset](https://app.roboflow.com/images/download-dataset-badge.svg)](https://universe.roboflow.com/roboflow-jvuqo/basketball-court-detection-2)      |
-| 🏀 basketball jersey numbers ocr       | [![Download Dataset](https://app.roboflow.com/images/download-dataset-badge.svg)](https://universe.roboflow.com/roboflow-jvuqo/basketball-jersey-numbers-ocr)     |
+## Estrutura do projeto
 
+```text
+Football-Vision-Analytics/
+├── assets/                         # Imagens e diagramas de apoio
+├── docs/                           # Documentação técnica em português
+├── examples/
+│   └── soccer/
+│       ├── data/                   # Vídeos/modelos locais ignorados pelo Git
+│       ├── main.py                 # Entrypoint do exemplo
+│       ├── requirements.txt        # Dependências extras históricas do exemplo
+│       └── setup.sh                # Script original de download de dados/modelos
+├── notebooks/                      # Notebooks de treino dos modelos
+├── outputs/                        # Resultados gerados localmente
+├── src/
+│   └── football_vision_analytics/
+│       ├── analytics/              # Cálculos derivados, como velocidade
+│       ├── classification/         # Classificação visual dos times
+│       ├── config/                 # Configuração e caminhos
+│       ├── pipeline/               # Orquestração dos modos de análise
+│       ├── pitch/                  # Campo e transformação de perspectiva
+│       ├── tracking/               # Rastreamento da bola
+│       ├── utils/                  # Utilitários de detecções
+│       └── visualization/          # Desenho do campo e visualizações
+└── tests/                          # Testes unitários de componentes puros
+```
 
-Visit [Roboflow Universe](https://universe.roboflow.com/) and explore other sport-related datasets.
+## Pré-requisitos
 
-## 🔥 demos
+- Python >= 3.10
+- Git
+- Ambiente com suporte às dependências de Machine Learning do projeto
+- CUDA ou MPS são opcionais; `cpu` funciona, mas tende a ser mais lento
 
-https://github.com/roboflow/sports/assets/26109316/7ad414dd-cc4e-476d-9af3-02dfdf029205
+Os vídeos e pesos `.pt` são arquivos pesados e ficam ignorados pelo Git. Para executar o pipeline completo, eles devem existir em `examples/soccer/data/` ou ser informados via argumentos CLI.
 
-## 🏆 contribution
+## Clonar
 
-We love your input! [Let us know](https://github.com/roboflow/sports/issues) what else we should build!
+```bash
+git clone https://github.com/Markson22/Football-Vision-Analytics.git
+cd Football-Vision-Analytics
+```
+
+## Criar ambiente virtual
+
+Linux/macOS:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+WSL:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+## Instalar dependências
+
+```bash
+pip install -e ".[dev]"
+```
+
+Se for usar apenas o exemplo histórico, `examples/soccer/requirements.txt` ainda lista dependências auxiliares do setup original.
+
+## Executar
+
+Exemplo sem janela OpenCV, salvando o resultado em `outputs/videos/`:
+
+```bash
+python examples/soccer/main.py \
+  --source_video_path examples/soccer/data/0bfacc_0.mp4 \
+  --target_video_path outputs/videos/player-detection.mp4 \
+  --device cpu \
+  --mode PLAYER_DETECTION \
+  --no_display
+```
+
+Modos disponíveis:
+
+```text
+PITCH_DETECTION
+PLAYER_DETECTION
+BALL_DETECTION
+PLAYER_TRACKING
+TEAM_CLASSIFICATION
+RADAR
+PLAYER_SPEED_ESTIMATION
+```
+
+Também é possível informar modelos em outros caminhos:
+
+```bash
+python examples/soccer/main.py \
+  --source_video_path caminho/video.mp4 \
+  --target_video_path outputs/videos/resultado.mp4 \
+  --player_model_path caminho/football-player-detection.pt \
+  --pitch_model_path caminho/football-pitch-detection.pt \
+  --ball_model_path caminho/football-ball-detection.pt \
+  --mode RADAR \
+  --no_display
+```
+
+## Documentação
+
+- [Guia de instalação e execução](docs/getting-started.md)
+- [Arquitetura interna](docs/architecture.md)
+- [Pipeline de visão computacional](docs/pipeline.md)
+
+## Roadmap
+
+- Cálculo de distância percorrida por jogador.
+- Posse de bola.
+- Mapas de calor.
+- Estatísticas agregadas da partida.
+- Identificação mais robusta de árbitros e goleiros.
+- Exportação de métricas em CSV/JSON.
+- Testes de integração com vídeos pequenos de amostra.
+
+## Créditos e código de terceiros
+
+Este projeto utiliza bibliotecas e ideias do ecossistema de visão computacional, incluindo Roboflow, Supervision, Ultralytics YOLO e Transformers. Partes do código original foram inspiradas ou adaptadas do projeto `roboflow/sports`; os créditos e licenças desses projetos devem ser preservados.
+
+O **Football Vision Analytics** é desenvolvido e mantido por Markson Cesar, sem reivindicar autoria sobre bibliotecas, modelos, datasets ou projetos de terceiros utilizados como base.
+
+## 👨‍💻 Autor
+
+**Markson Cesar**
+
+Desenvolvedor do projeto Football Vision Analytics.
+
+GitHub: [@Markson22](https://github.com/Markson22)
+
+## Licença
+
+Este repositório mantém a licença MIT presente no projeto. Verifique também as licenças dos modelos, datasets e bibliotecas externas utilizados no pipeline.

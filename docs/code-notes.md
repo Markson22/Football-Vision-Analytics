@@ -34,8 +34,12 @@ Anotações visuais com cores distintas por time
 
 
 
-Para reproduzir 
+Para reproduzir, use o entrypoint atual a partir da raiz do repositório:
 
-vision computer\sports-main>
-
- python main.py --source_video_path "data/0bfacc_0.mp4" --target_video_path "output.mp4"
+```bash
+python examples/soccer/main.py \
+  --source_video_path examples/soccer/data/0bfacc_0.mp4 \
+  --target_video_path outputs/videos/output.mp4 \
+  --mode PLAYER_DETECTION \
+  --no_display
+```
